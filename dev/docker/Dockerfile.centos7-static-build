@@ -1,24 +1,11 @@
 FROM centos:7
 
-ARG REPO_URL
-RUN if [ "$(uname -m)" = "aarch64" ]; then \
-      REPO_URL="http://vault.centos.org/altarch"; \
-    else \
-      REPO_URL="http://vault.centos.org/centos"; \
-    fi
-
 # test
 RUN cat /etc/yum.repos.d/CentOS-Base.repo
-RUN echo ${REPO_URL}
-RUN echo "1"
 # test
 
 RUN sed -i -e "s|mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-* || true
 RUN sed -i -e "s|#baseurl=http://mirror.centos.org/centos|baseurl=${REPO_URL}|g" /etc/yum.repos.d/CentOS-* || true
-
-
-
-RUN cat /etc/yum.repos.d/CentOS-Base.repo
 
 RUN yum install -y epel-release centos-release-scl
 RUN rm /etc/yum.repos.d/CentOS-SCLo-scl.repo -f
