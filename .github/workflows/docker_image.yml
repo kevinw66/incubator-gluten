@@ -50,7 +50,7 @@ jobs:
           context: .
           file: dev/docker/Dockerfile.centos7-static-build
           push: true
-          tags: apache/gluten:vcpkg-centos-7
+          tags: wzg547228197/gluten:vcpkg-centos-7
           platforms: linux/amd64,linux/arm64
 
   build-centos-8:
@@ -75,7 +75,7 @@ jobs:
           context: .
           file: dev/docker/Dockerfile.centos8-dynamic-build
           push: true
-          tags: apache/gluten:centos-8 # JDK8 based
+          tags: wzg547228197/gluten:centos-8 # JDK8 based
           platforms: linux/amd64,linux/arm64
 
       - name: Build and push Docker image Centos8 + JDK11
@@ -84,7 +84,7 @@ jobs:
           context: .
           file: dev/docker/Dockerfile.centos8-dynamic-build-jdk11
           push: true
-          tags: apache/gluten:centos-8-jdk11
+          tags: wzg547228197/gluten:centos-8-jdk11
           platforms: linux/amd64,linux/arm64
 
       - name: Build and push Docker image Centos8 + JDK17
@@ -93,6 +93,6 @@ jobs:
           context: .
           file: dev/docker/Dockerfile.centos8-dynamic-build-jdk17
           push: true
-          tags: apache/gluten:centos-8-jdk17
+          tags: wzg547228197/gluten:centos-8-jdk17
           platforms: linux/amd64,linux/arm64
 
