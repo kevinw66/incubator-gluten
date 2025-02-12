@@ -19,7 +19,7 @@ name: Build and Push Docker Image
 on:
   push:
     branches:
-      - main
+      - arm-ci
     paths:
       - '.github/workflows/docker_image.yml'
       - 'dev/docker/Dockerfile.centos7-static-build'
