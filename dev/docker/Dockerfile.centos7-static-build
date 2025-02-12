@@ -15,6 +15,10 @@ RUN sed -i \
        -e 's/mirror\.centos\.org/vault.centos.org/' \
        /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
 
+# test
+RUN cat /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+# test
+
 RUN yum install -y git patch wget sudo java-1.8.0-openjdk-devel ccache
 
 RUN git clone --depth=1 https://github.com/apache/incubator-gluten /opt/gluten
