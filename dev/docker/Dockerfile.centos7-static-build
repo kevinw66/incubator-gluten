@@ -17,13 +17,14 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
         -e 's/^#baseurl/baseurl/' \
         -e 's/mirror.centos.org\/centos/vault.centos.org\/altarch/' \
         -e 's/debuginfo.centos.org\/centos/debuginfo.centos.org\/altarch/' \
-        /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+        /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo; \
     else \
     sed -i \
         -e 's/^mirrorlist/#mirrorlist/' \
         -e 's/^#baseurl/baseurl/' \
         -e 's/mirror.centos.org/vault.centos.org/' \
-        /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+        /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo; \
+    fi
 
 
 
