@@ -1,18 +1,9 @@
 FROM centos:7
 
-# test
-RUN cat /etc/yum.repos.d/CentOS-Base.repo
-# test
-
-
-
 RUN sed -i -e "s|mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-* || true
 RUN sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* || true
 
 RUN yum install -y epel-release centos-release-scl
-# test
-RUN cat /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
-# test
 RUN rm /etc/yum.repos.d/CentOS-SCLo-scl.repo -f
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
         sed -i \
@@ -29,12 +20,6 @@ RUN if [ "$(uname -m)" = "aarch64" ]; then \
             -e 's/mirror\.centos\.org/vault.centos.org/' \
             /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo; \
     fi
-
-
-
-# test
-RUN cat /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
-# test
 
 RUN yum install -y git patch wget sudo java-1.8.0-openjdk-devel ccache
 
