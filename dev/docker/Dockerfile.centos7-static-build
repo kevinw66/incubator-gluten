@@ -10,6 +10,9 @@ RUN sed -i -e "s|mirrorlist=|#mirrorlist=|g" /etc/yum.repos.d/CentOS-* || true
 RUN sed -i -e "s|#baseurl=http://mirror.centos.org|baseurl=http://vault.centos.org|g" /etc/yum.repos.d/CentOS-* || true
 
 RUN yum install -y epel-release centos-release-scl
+# test
+RUN cat /etc/yum.repos.d/CentOS-SCLo-scl-rh.repo
+# test
 RUN rm /etc/yum.repos.d/CentOS-SCLo-scl.repo -f
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
     sed -i \
