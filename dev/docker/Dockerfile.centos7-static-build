@@ -30,6 +30,7 @@ RUN echo "check_certificate = off" >> ~/.wgetrc
 # test
 RUN id -u
 RUN echo whoami
+
 # test
 
 RUN cd /opt/gluten && bash ./dev/vcpkg/setup-build-depends.sh
