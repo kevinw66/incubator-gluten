@@ -54,7 +54,7 @@ jobs:
           file: dev/docker/Dockerfile.centos8-static-build
           push: true
           tags: wzg547228197/gluten:vcpkg-centos-8
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
 
   build-centos-8:
     runs-on: ubuntu-latest
@@ -82,7 +82,7 @@ jobs:
           file: dev/docker/Dockerfile.centos8-dynamic-build
           push: true
           tags: wzg547228197/gluten:centos-8 # JDK8 based
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
 
       - name: Build and push Docker image Centos8 + JDK11
         uses: docker/build-push-action@v6
@@ -91,7 +91,7 @@ jobs:
           file: dev/docker/Dockerfile.centos8-dynamic-build-jdk11
           push: true
           tags: wzg547228197/gluten:centos-8-jdk11
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
 
       - name: Build and push Docker image Centos8 + JDK17
         uses: docker/build-push-action@v6
@@ -100,5 +100,5 @@ jobs:
           file: dev/docker/Dockerfile.centos8-dynamic-build-jdk17
           push: true
           tags: wzg547228197/gluten:centos-8-jdk17
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/arm64
 
