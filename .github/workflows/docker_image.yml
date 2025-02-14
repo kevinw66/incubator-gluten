@@ -56,6 +56,7 @@ jobs:
           tags: wzg547228197/gluten:vcpkg-centos-8
           platforms: linux/amd64
 
+
 #  build-centos-8:
 #    runs-on: ubuntu-latest
 #
