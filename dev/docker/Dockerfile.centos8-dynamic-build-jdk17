@@ -1,4 +1,4 @@
-FROM apache/gluten:centos-8
+FROM wzg547228197/gluten:centos-8
 
 
 RUN yum install -y java-17-openjdk-devel patch wget git perl
@@ -7,7 +7,8 @@ ENV PATH=$JAVA_HOME/bin:$PATH
 
 ENV PATH=${PATH}:/usr/lib/maven/bin
 
-RUN git clone --depth=1 https://github.com/apache/incubator-gluten /opt/gluten
+RUN git clone https://github.com/kevinw66/incubator-gluten /opt/gluten
+RUN cd /opt/gluten && git checkout origin/arm-ci
 
 RUN if [ "$(uname -m)" = "aarch64" ]; then \
         export CPU_TARGET="aarch64"; \
