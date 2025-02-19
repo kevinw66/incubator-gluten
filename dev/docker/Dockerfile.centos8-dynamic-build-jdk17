@@ -1,4 +1,4 @@
-FROM wzg547228197/gluten:centos-8
+FROM wzg547228197/gluten:centos-8-arm
 
 
 RUN yum install -y java-17-openjdk-devel patch wget git perl
