@@ -71,7 +71,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-linux/amd64
+          name: digests-amd64
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -117,7 +117,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-linux/arm64
+          name: digests-arm64
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
