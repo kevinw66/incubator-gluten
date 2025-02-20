@@ -156,7 +156,6 @@ jobs:
 
   build-centos-8-jdk11:
     runs-on: ${{ matrix.os }}
-    needs: build-centos-8-jdk8
     strategy:
       matrix:
         os: [ ubuntu-latest, ubuntu-24.04-arm ]
@@ -206,7 +205,6 @@ jobs:
 
   build-centos-8-jdk17:
     runs-on: ${{ matrix.os }}
-    needs: build-centos-8-jdk8
     strategy:
       matrix:
         os: [ ubuntu-latest, ubuntu-24.04-arm ]
