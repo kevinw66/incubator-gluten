@@ -59,7 +59,6 @@ jobs:
           context: .
           file: dev/docker/Dockerfile.centos8-test-merge
           labels: ${{ steps.meta.outputs.labels }}
-          tags: ${{ steps.meta.outputs.tags }}
           outputs: type=image,"name=${{ env.DOCKERHUB_REPO }}",push-by-digest=true,push=true
 
       - name: Export digest
@@ -106,7 +105,6 @@ jobs:
           context: .
           file: dev/docker/Dockerfile.centos8-test-merge
           labels: ${{ steps.meta.outputs.labels }}
-          tags: ${{ steps.meta.outputs.tags }}
           outputs: type=image,"name=${{ env.DOCKERHUB_REPO }}",push-by-digest=true,push=true
 
       - name: Export digest
