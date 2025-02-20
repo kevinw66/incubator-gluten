@@ -100,7 +100,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-vcpkg-centos8-${{ matrix.os }}
+          name: digests-vcpkg-centos-8-${{ matrix.os }}
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -149,7 +149,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-centos8-jdk8-${{ matrix.os }}
+          name: digests-centos-8-jdk8-${{ matrix.os }}
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -198,7 +198,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-centos8-jdk11-${{ matrix.os }}
+          name: digests-centos-8-jdk11-${{ matrix.os }}
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -247,7 +247,7 @@ jobs:
       - name: Upload digest
         uses: actions/upload-artifact@v4
         with:
-          name: digests-centos8-jdk17-${{ matrix.os }}
+          name: digests-centos-8-jdk17-${{ matrix.os }}
           path: ${{ runner.temp }}/digests/*
           if-no-files-found: error
           retention-days: 1
@@ -256,7 +256,7 @@ jobs:
     runs-on: ubuntu-latest
     strategy:
       matrix:
-        digests: [ vcpkg-centos8, centos8-jdk8, centos8-jdk11, centos8-jdk17 ]
+        digests: [ vcpkg-centos-8, centos-8-jdk8, centos-8-jdk11, centos-8-jdk17 ]
     needs:
       - build-vcpkg-centos-8
       - build-centos-8-jdk8
