@@ -28,6 +28,9 @@ on:
       - 'dev/docker/Dockerfile.centos8-dynamic-build-jdk11'
       - 'dev/docker/Dockerfile.centos8-dynamic-build-jdk17'
 
+env:
+  DOCKERHUB_REPO: wzg547228197/gluten
+
 jobs:
   build-vcpkg-centos-7:
     runs-on: ubuntu-latest
@@ -51,7 +54,7 @@ jobs:
           context: .
           file: dev/docker/Dockerfile.centos7-static-build
           push: true
-          tags: wzg547228197/gluten:vcpkg-centos-7
+          tags: ${{ env.DOCKERHUB_REPO }}:vcpkg-centos-7
 
   build-vcpkg-centos-8:
     runs-on: ${{ matrix.os }}
