@@ -41,7 +41,6 @@ on:
       - 'dev/**'
 
 env:
-  DOCKERHUB_REPO: wzg547228197/gluten
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
   MVN_CMD: 'mvn -ntp'
   WGET_CMD: 'wget -nv'
@@ -84,8 +83,8 @@ jobs:
             ccache-centos8-release-default
       - name: Build Gluten native libraries
         run: |
-          docker pull ${{ env.DOCKERHUB_REPO }}:vcpkg-centos-8
-          docker run -v $GITHUB_WORKSPACE:/work -w /work ${{ env.DOCKERHUB_REPO }}:vcpkg-centos-8 bash -c "
+          docker pull wzg547228197/gluten:vcpkg-centos-8
+          docker run -v $GITHUB_WORKSPACE:/work -w /work wzg547228197/gluten:vcpkg-centos-8 bash -c "
             df -a
             cd /work
             export CCACHE_DIR=/work/.ccache
@@ -449,7 +448,7 @@ jobs:
         uniffle: [ "0.9.2" ]
         hadoop: [ "2.8.5" ]
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Native Artifacts
@@ -499,7 +498,7 @@ jobs:
         spark: [ "spark-3.2" ]
         celeborn: [ "celeborn-0.5.3", "celeborn-0.4.3", "celeborn-0.3.2-incubating" ]
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Native Artifacts
@@ -544,7 +543,7 @@ jobs:
   run-spark-test-spark32:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v4
@@ -585,7 +584,7 @@ jobs:
   run-spark-test-spark32-slow:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -613,7 +612,7 @@ jobs:
   run-spark-test-spark33:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -657,7 +656,7 @@ jobs:
   run-spark-test-spark33-slow:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -687,7 +686,7 @@ jobs:
   run-spark-test-spark34:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk17
+    container: wzg547228197/gluten:centos-8-jdk17
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -733,7 +732,7 @@ jobs:
   run-spark-test-spark34-jdk8:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -779,7 +778,7 @@ jobs:
   run-spark-test-spark34-slow:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk17
+    container: wzg547228197/gluten:centos-8-jdk17
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -810,7 +809,7 @@ jobs:
   run-spark-test-spark34-slow-jdk8:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -842,7 +841,7 @@ jobs:
   run-spark-test-spark35:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -885,7 +884,7 @@ jobs:
   run-spark-test-spark35-jdk17:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk17
+    container: wzg547228197/gluten:centos-8-jdk17
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -929,7 +928,7 @@ jobs:
   run-spark-test-spark35-scala213:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -966,7 +965,7 @@ jobs:
   run-spark-test-spark35-slow:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -995,7 +994,7 @@ jobs:
   run-spark-test-spark35-ras:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -1031,7 +1030,7 @@ jobs:
   run-spark-test-spark35-slow-ras:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -1059,7 +1058,7 @@ jobs:
   run-spark-test-spark35-smj:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -1095,7 +1094,7 @@ jobs:
   run-spark-test-spark35-slow-smj:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -1122,7 +1121,7 @@ jobs:
 
   run-cpp-test-udf-test:
     runs-on: ubuntu-24.04-arm
-    container: ${{ env.DOCKERHUB_REPO }}:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Get Ccache
