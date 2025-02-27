@@ -47,7 +47,6 @@ static inline std::string jStringToCString(JNIEnv* env, jstring jstr) {
   return result;
 }
 
-
 static inline void checkException(JNIEnv* env) {
   if (env->ExceptionCheck()) {
     jthrowable t = env->ExceptionOccurred();
