@@ -36,14 +36,17 @@
 static jint jniVersion = JNI_VERSION_1_8;
 
 static inline std::string jStringToCString(JNIEnv* env, jstring jstr) {
-  if (jstr == nullptr) return "";
+  if (jstr == nullptr)
+    return "";
   const char* utfChars = env->GetStringUTFChars(jstr, nullptr);
-  if (!utfChars) return "";
+  if (!utfChars)
+    return "";
   jsize utfLen = env->GetStringUTFLength(jstr);
   std::string result(utfChars, utfLen);
   env->ReleaseStringUTFChars(jstr, utfChars);
   return result;
 }
+
 
 static inline void checkException(JNIEnv* env) {
   if (env->ExceptionCheck()) {
