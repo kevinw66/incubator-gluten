@@ -323,6 +323,7 @@ object ExpressionMappings {
     Sig[Skewness](SKEWNESS),
     Sig[Kurtosis](KURTOSIS),
     Sig[ApproximatePercentile](APPROX_PERCENTILE),
+    Sig[HyperLogLogPlusPlus](APPROX_COUNT_DISTINCT),
     Sig[Percentile](PERCENTILE)
   ) ++ SparkShimLoader.getSparkShims.aggregateExpressionMappings
 
@@ -345,6 +346,13 @@ object ExpressionMappings {
       BackendsApiManager.getSparkPlanExecApiInstance.extraExpressionMappings)).filterNot(
       kv => blacklist.contains(kv._2))
     filtered
+  }
+
+  // This is needed when generating function support status documentation for Spark built-in
+  // functions.
+  // Used by gluten/tools/scripts/gen-function-support-docs.py
+  def listExpressionMappings(): Array[(String, String)] = {
+    expressionsMap.map(kv => (kv._1.getSimpleName, kv._2)).toArray
   }
 
   private lazy val defaultExpressionsMap: Map[Class[_], String] = {

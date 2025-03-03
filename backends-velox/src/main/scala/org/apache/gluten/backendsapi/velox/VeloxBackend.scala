@@ -35,7 +35,7 @@ import org.apache.gluten.utils._
 
 import org.apache.spark.sql.catalyst.catalog.BucketSpec
 import org.apache.spark.sql.catalyst.expressions.{Alias, CumeDist, DenseRank, Descending, Expression, Lag, Lead, NamedExpression, NthValue, NTile, PercentRank, RangeFrame, Rank, RowNumber, SortOrder, SpecialFrameBoundary, SpecifiedWindowFrame}
-import org.apache.spark.sql.catalyst.expressions.aggregate.{AggregateExpression, ApproximatePercentile, Percentile}
+import org.apache.spark.sql.catalyst.expressions.aggregate.{AggregateExpression, ApproximatePercentile, HyperLogLogPlusPlus, Percentile}
 import org.apache.spark.sql.catalyst.plans.{JoinType, LeftOuter, RightOuter}
 import org.apache.spark.sql.catalyst.util.{CaseInsensitiveMap, CharVarcharUtils}
 import org.apache.spark.sql.connector.read.Scan
@@ -51,9 +51,7 @@ import org.apache.spark.sql.types._
 import org.apache.spark.util.SerializableConfiguration
 
 import org.apache.hadoop.fs.Path
-import org.apache.hadoop.fs.viewfs.ViewFileSystemUtils
 
-import scala.collection.mutable
 import scala.util.control.Breaks.breakable
 
 class VeloxBackend extends SubstraitBackend {
@@ -109,25 +107,12 @@ object VeloxBackendSettings extends BackendSettingsApi {
 
     def validateScheme(): Option[String] = {
       val filteredRootPaths = distinctRootPaths(rootPaths)
-      if (filteredRootPaths.nonEmpty) {
-        val resolvedPaths =
-          if (GlutenConfig.get.enableHdfsViewfs) {
-            ViewFileSystemUtils.convertViewfsToHdfs(
-              filteredRootPaths,
-              mutable.Map.empty[String, String],
-              serializableHadoopConf.get.value)
-          } else {
-            filteredRootPaths
-          }
-
-        if (
-          !VeloxFileSystemValidationJniWrapper.allSupportedByRegisteredFileSystems(
-            resolvedPaths.toArray)
-        ) {
-          Some(s"Scheme of [$filteredRootPaths] is not supported by registered file systems.")
-        } else {
-          None
-        }
+      if (
+        filteredRootPaths.nonEmpty &&
+        !VeloxFileSystemValidationJniWrapper.allSupportedByRegisteredFileSystems(
+          filteredRootPaths.toArray)
+      ) {
+        Some(s"Scheme of [$filteredRootPaths] is not supported by registered file systems.")
       } else {
         None
       }
@@ -476,7 +461,8 @@ object VeloxBackendSettings extends BackendSettingsApi {
             case l: Lead if !l.input.foldable =>
             case aggrExpr: AggregateExpression
                 if !aggrExpr.aggregateFunction.isInstanceOf[ApproximatePercentile]
-                  && !aggrExpr.aggregateFunction.isInstanceOf[Percentile] =>
+                  && !aggrExpr.aggregateFunction.isInstanceOf[Percentile]
+                  && !aggrExpr.aggregateFunction.isInstanceOf[HyperLogLogPlusPlus] =>
             case _ =>
               allSupported = false
           }
@@ -578,6 +564,6 @@ object VeloxBackendSettings extends BackendSettingsApi {
 
   override def needPreComputeRangeFrameBoundary(): Boolean = true
 
-  override def supportRangeExec(): Boolean = true
+  override def supportCollectLimitExec(): Boolean = true
 
 }
