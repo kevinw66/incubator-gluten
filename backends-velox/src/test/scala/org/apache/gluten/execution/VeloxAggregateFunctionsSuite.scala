@@ -51,9 +51,10 @@ abstract class VeloxAggregateFunctionsSuite extends VeloxWholeStageTransformerSu
                           |select sum(l_linenumber), l_orderkey from lineitem
                           |group by l_orderkey having l_orderkey > 59800;
                           |""".stripMargin) {
-      df => {
-        logWarning(s"df: ${df.queryExecution}")
-      }
+      df =>
+        {
+          logWarning(s"df: ${df.queryExecution}")
+        }
     }
   }
 }
