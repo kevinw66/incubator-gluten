@@ -136,6 +136,7 @@ jobs:
           cd $GITHUB_WORKSPACE/
           export SPARK_SCALA_VERSION=2.12
           $MVN_CMD clean test -Pspark-3.2 -Pbackends-velox \
+          -Dlog4j.configuration=gluten-ut/common/src/test/resources/log4j.properties \
           -DargLine="-Dspark.test.home=/opt/shims/spark32/spark_home/ -Dlogtostderr=1" \
           -DwildcardSuites=org.apache.gluten.execution.VeloxAggregateFunctionsDefaultSuite \
           -DtagsToExclude=org.apache.spark.tags.ExtendedSQLTest,org.apache.gluten.tags.UDFTest,org.apache.gluten.tags.SkipTestTags
