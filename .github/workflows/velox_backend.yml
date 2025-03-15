@@ -85,6 +85,7 @@ jobs:
         run: |
           docker pull apache/gluten:vcpkg-centos-7
           docker run -v $GITHUB_WORKSPACE:/work -w /work apache/gluten:vcpkg-centos-7 bash -c "
+            yum install tzdata -y
             df -a
             cd /work
             export CCACHE_DIR=/work/.ccache
@@ -135,10 +136,8 @@ jobs:
         run: |
           cd $GITHUB_WORKSPACE/
           export SPARK_SCALA_VERSION=2.12
-          $MVN_CMD clean test -Pspark-3.2 -Pbackends-velox \
-          -Dlog4j.configuration=gluten-ut/common/src/test/resources/log4j.properties \
-          -DargLine="-Dspark.test.home=/opt/shims/spark32/spark_home/ -Dlogtostderr=1" \
-          -DwildcardSuites=org.apache.gluten.execution.VeloxAggregateFunctionsDefaultSuite \
+          $MVN_CMD clean test -Pspark-3.2 -Pspark-ut -Pbackends-velox -Pceleborn -Piceberg \
+          -Pdelta -Phudi -DargLine="-Dspark.test.home=/opt/shims/spark32/spark_home/" \
           -DtagsToExclude=org.apache.spark.tags.ExtendedSQLTest,org.apache.gluten.tags.UDFTest,org.apache.gluten.tags.SkipTestTags
       - name: Upload test report
         if: always()
