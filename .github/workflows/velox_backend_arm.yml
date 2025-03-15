@@ -13,12 +13,12 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-name: Velox backend Github Runner
+name: Velox backend Github Runner ARM
 
 on:
   pull_request:
     paths:
-      - '.github/workflows/velox_backend.yml'
+      - '.github/workflows/velox_backend_arm.yml'
       - 'pom.xml'
       - 'backends-velox/**'
       - 'gluten-uniffle/**'
@@ -70,27 +70,27 @@ concurrency:
   cancel-in-progress: true
 
 jobs:
-  build-native-lib-centos-7:
-    runs-on: ubuntu-20.04
+  build-native-lib-centos-8:
+    runs-on: ubuntu-24.04-arm
     steps:
       - uses: actions/checkout@v4
       - name: Get Ccache
         uses: actions/cache/restore@v4
         with:
           path: '${{ env.CCACHE_DIR }}'
-          key: ccache-centos7-release-default-${{github.sha}}
+          key: ccache-centos8-release-default-${{github.sha}}
           restore-keys: |
-            ccache-centos7-release-default
+            ccache-centos8-release-default
       - name: Build Gluten native libraries
         run: |
-          docker pull apache/gluten:vcpkg-centos-7
-          docker run -v $GITHUB_WORKSPACE:/work -w /work apache/gluten:vcpkg-centos-7 bash -c "
-            yum install tzdata -y
+          docker pull apache/gluten:vcpkg-centos-8
+          docker run -v $GITHUB_WORKSPACE:/work -w /work apache/gluten:vcpkg-centos-8 bash -c "
+            dnf -y install https://rpmfind.net/linux/almalinux/8.10/BaseOS/x86_64/os/Packages/tzdata-2024b-4.el8.noarch.rpm
             df -a
             cd /work
             export CCACHE_DIR=/work/.ccache
             mkdir -p /work/.ccache
-            bash dev/ci-velox-buildstatic-centos-7.sh
+            bash dev/ci-velox-buildstatic-centos-8.sh
             ccache -s
             mkdir -p /work/.m2/repository/org/apache/arrow/
             cp -r /root/.m2/repository/org/apache/arrow/* /work/.m2/repository/org/apache/arrow/
@@ -101,29 +101,29 @@ jobs:
         id: ccache
         with:
           path: '${{ env.CCACHE_DIR }}'
-          key: ccache-centos7-release-default-${{github.sha}}
+          key: ccache-centos8-release-default-${{github.sha}}
       - uses: actions/upload-artifact@v4
         with:
-          name: velox-native-lib-centos-7-${{github.sha}}
+          name: velox-native-lib-centos-8-${{github.sha}}
           path: ./cpp/build/releases/
       - uses: actions/upload-artifact@v4
         with:
-          name: arrow-jars-centos-7-${{github.sha}}
+          name: arrow-jars-centos-8-${{github.sha}}
           path: .m2/repository/org/apache/arrow/
 
   run-spark-test-spark32:
-    needs: build-native-lib-centos-7
-    runs-on: ubuntu-20.04
+    needs: build-native-lib-centos-8
+    runs-on: ubuntu-24.04-arm
     container: apache/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - uses: actions/download-artifact@v4
         with:
-          name: velox-native-lib-centos-7-${{github.sha}}
+          name: velox-native-lib-centos-8-${{github.sha}}
           path: ./cpp/build/releases
       - uses: actions/download-artifact@v4
         with:
-          name: arrow-jars-centos-7-${{github.sha}}
+          name: arrow-jars-centos-8-${{github.sha}}
           path: /root/.m2/repository/org/apache/arrow/
       - name: Prepare
         run: |
