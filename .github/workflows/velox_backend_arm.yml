@@ -83,8 +83,8 @@ jobs:
             ccache-centos8-release-default
       - name: Build Gluten native libraries
         run: |
-          docker pull apache/gluten:vcpkg-centos-8
-          docker run -v $GITHUB_WORKSPACE:/work -w /work apache/gluten:vcpkg-centos-8 bash -c "
+          docker pull wzg547228197/gluten:vcpkg-centos-8
+          docker run -v $GITHUB_WORKSPACE:/work -w /work wzg547228197/gluten:vcpkg-centos-8 bash -c "
             dnf -y install https://rpmfind.net/linux/almalinux/8.10/BaseOS/x86_64/os/Packages/tzdata-2024b-4.el8.noarch.rpm
             df -a
             cd /work
@@ -195,7 +195,7 @@ jobs:
   run-spark-test-spark34:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk17
+    container: wzg547228197/gluten:centos-8-jdk17
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -241,7 +241,7 @@ jobs:
   run-spark-test-spark34-jdk8:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -287,7 +287,7 @@ jobs:
   run-spark-test-spark34-slow:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk17
+    container: wzg547228197/gluten:centos-8-jdk17
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -318,7 +318,7 @@ jobs:
   run-spark-test-spark34-slow-jdk8:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -350,7 +350,7 @@ jobs:
   run-spark-test-spark35:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -393,7 +393,7 @@ jobs:
   run-spark-test-spark35-jdk17:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk17
+    container: wzg547228197/gluten:centos-8-jdk17
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -437,7 +437,7 @@ jobs:
   run-spark-test-spark35-scala213:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -474,7 +474,7 @@ jobs:
   run-spark-test-spark35-slow:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -503,7 +503,7 @@ jobs:
   run-spark-test-spark35-ras:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -539,7 +539,7 @@ jobs:
   run-spark-test-spark35-slow-ras:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -567,7 +567,7 @@ jobs:
   run-spark-test-spark35-smj:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -603,7 +603,7 @@ jobs:
   run-spark-test-spark35-slow-smj:
     needs: build-native-lib-centos-8
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Download All Artifacts
@@ -630,7 +630,7 @@ jobs:
 
   run-cpp-test-udf-test:
     runs-on: ubuntu-24.04-arm
-    container: apache/gluten:centos-8-jdk8
+    container: wzg547228197/gluten:centos-8-jdk8
     steps:
       - uses: actions/checkout@v2
       - name: Get Ccache
