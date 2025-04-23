@@ -18,7 +18,7 @@
 set -e
 
 source /opt/rh/gcc-toolset-11/enable
-export NUM_THREADS=4
+export NUM_THREADS=2
 if [ "$(uname -m)" = "aarch64" ]; then
     export CPU_TARGET="aarch64";
     export VCPKG_FORCE_SYSTEM_BINARIES=1;
