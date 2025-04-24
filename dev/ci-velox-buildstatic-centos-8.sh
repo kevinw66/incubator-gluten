@@ -15,31 +15,14 @@
 # See the License for the specific language governing permissions and
 # limitations under the License.
 
-set -eux
+set -e
 
-CURRENT_DIR=$(cd "$(dirname "$BASH_SOURCE")"; pwd)
-GLUTEN_DIR="$CURRENT_DIR/.."
-LINUX_OS=$(. /etc/os-release && echo ${ID})
-VERSION=$(. /etc/os-release && echo ${VERSION_ID})
-ARCH=`uname -m`
-
-cd "$GLUTEN_DIR"
-if [ "$LINUX_OS" == "centos" ]; then
-  if [ "$VERSION" == "8" ]; then
-    source /opt/rh/gcc-toolset-11/enable
-  elif [ "$VERSION" == "7" ]; then
-    export MANPATH=""
-    source /opt/rh/devtoolset-11/enable
-  fi
+source /opt/rh/gcc-toolset-11/enable
+export NUM_THREADS=2
+if [ "$(uname -m)" = "aarch64" ]; then
+    export CPU_TARGET="aarch64";
+    export VCPKG_FORCE_SYSTEM_BINARIES=1;
 fi
 
-if [ "$ARCH" = "aarch64" ]; then
-  export VCPKG_FORCE_SYSTEM_BINARIES=1
-  export CPU_TARGET="aarch64"
-fi
-
-
-# build gluten with velox backend, prompt always respond y
-export PROMPT_ALWAYS_RESPOND=y
-
-./dev/buildbundle-veloxbe.sh --enable_vcpkg=ON --build_tests=ON --build_arrow=OFF --build_benchmarks=ON --enable_s3=ON --enable_gcs=ON --enable_hdfs=ON "$@"
+./dev/builddeps-veloxbe.sh --enable_vcpkg=ON --build_arrow=OFF --build_tests=OFF --build_benchmarks=OFF \
+                           --build_examples=OFF --enable_s3=ON --enable_gcs=ON --enable_hdfs=ON --enable_abfs=ON

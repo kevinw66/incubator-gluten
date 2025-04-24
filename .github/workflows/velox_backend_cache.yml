@@ -18,7 +18,7 @@ name: Velox backend Dependency Cache
 on:
   push:
     branches:
-      - 'main'
+      - 'velox-ci-arm'
 
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
@@ -30,7 +30,7 @@ concurrency:
 
 jobs:
   cache-native-lib-centos-7:
-    runs-on: ubuntu-20.04
+    runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
       - name: Get Ccache
@@ -42,7 +42,7 @@ jobs:
             ccache-centos7-release-default
       - name: Build Gluten native libraries
         run: |
-          docker run -v $GITHUB_WORKSPACE:/work -w /work apache/gluten:vcpkg-centos-7 bash -c "
+          docker run -v $GITHUB_WORKSPACE:/work -w /work wzg547228197/gluten:vcpkg-centos-7 bash -c "
             export CCACHE_DIR=/work/.ccache
             mkdir -p /work/.ccache
             bash dev/ci-velox-buildstatic-centos-7.sh
@@ -55,10 +55,12 @@ jobs:
           key: ccache-centos7-release-default-${{github.sha}}
 
   cache-native-lib-centos-8:
-    runs-on: ubuntu-20.04
-    container: apache/gluten:centos-8-jdk8
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-24.04, ubuntu-24.04-arm ]
     steps:
-      - uses: actions/checkout@v2
+      - uses: actions/checkout@v4
       - name: Get Ccache
         uses: actions/cache/restore@v3
         with:
@@ -68,6 +70,35 @@ jobs:
             ccache-centos8-release-default
       - name: Build Gluten native libraries
         run: |
+          docker run -v $GITHUB_WORKSPACE:/work -w /work wzg547228197/gluten:vcpkg-centos-8 bash -c "
+            export CCACHE_DIR=/work/.ccache
+            mkdir -p /work/.ccache
+            bash dev/ci-velox-buildstatic-centos-8.sh
+          "
+      - name: Save Ccache
+        uses: actions/cache/save@v3
+        id: ccache
+        with:
+          path: '${{ env.CCACHE_DIR }}'
+          key: ccache-centos8-release-default-${{github.sha}}
+
+  cache-shared-lib-centos-8:
+    runs-on: ${{ matrix.os }}
+    strategy:
+      matrix:
+        os: [ ubuntu-24.04, ubuntu-24.04-arm ]
+    container: wzg547228197/gluten:centos-8-jdk8
+    steps:
+      - uses: actions/checkout@v2
+      - name: Get Ccache
+        uses: actions/cache/restore@v3
+        with:
+          path: '${{ env.CCACHE_DIR }}'
+          key: ccache-centos8-release-shared-${{github.sha}}
+          restore-keys: |
+            ccache-centos8-release-shared
+      - name: Build Gluten shared libraries
+        run: |
           df -a
           bash dev/ci-velox-buildshared-centos-8.sh
           ccache -s
@@ -76,7 +107,7 @@ jobs:
         id: ccache
         with:
           path: '${{ env.CCACHE_DIR }}'
-          key: ccache-centos8-release-default-${{github.sha}}
+          key: ccache-centos8-release-shared-${{github.sha}}
 
   # ccache-native-lib-ubuntu-velox-ut:
   #   runs-on: ubuntu-20.04
