@@ -16,12 +16,9 @@
 name: Velox backend weekly job
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/velox_weekly.yml'
-  schedule:
-    - cron: '0 20 * * 0'
-
+  push:
+    branches:
+      - openeuler-check-test
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
   MVN_CMD: 'mvn -ntp'
@@ -108,7 +105,6 @@ jobs:
         os: [ "openeuler/openeuler:24.03" ]
         spark: [ "spark-3.5" ]
         java: [ "java-8" ]
-    if: ${{ startsWith(github.repository, 'apache/') }}
     runs-on: ubuntu-24.04-arm
     container: ${{ matrix.os }}
     steps:
@@ -121,6 +117,8 @@ jobs:
           export MAVEN_HOME=/usr/lib/maven
           export PATH=${MAVEN_HOME}/bin:${JAVA_HOME}/bin:${PATH}
           cd $GITHUB_WORKSPACE/ && ./dev/package.sh
+          ls package/target/thirdparty-lib/
+          cp package/target/thirdparty-lib/gluten-thirdparty-lib-*.jar /root/
       - name: Set environment variables
         run: |
           echo "JAVA_HOME=/usr/lib/jvm/java-1.8.0-openjdk" >> $GITHUB_ENV
@@ -135,10 +133,12 @@ jobs:
         run: |
           echo "JAVA_HOME: $JAVA_HOME"
           cd $GITHUB_WORKSPACE/tools/gluten-it
+          cp /root/gluten-thirdparty-lib-*.jar package/target/lib/
           GLUTEN_IT_JVM_ARGS=-Xmx5G sbin/gluten-it.sh queries-compare \
             --local --preset=velox --benchmark-type=h --error-on-memleak --off-heap-size=10g -s=1.0 --threads=16 --iterations=1 \
             --extra-conf=spark.gluten.loadLibFromJar=true \
-            --extra-conf=spark.gluten.loadLibOS=openEuler --extra-conf=spark.gluten.loadLibOSVersion=24.03
+            --extra-conf=spark.gluten.loadLibOS=openEuler --extra-conf=spark.gluten.loadLibOSVersion=24.03 \
+            --extra-conf=spark.driver.extraClassPath=gluten-thirdparty-lib-openEuler-24.03-aarch64.jar
 
   build-on-openeuler-vcpkg:
     strategy:
@@ -147,7 +147,6 @@ jobs:
         os: [ "openeuler/openeuler:24.03" ]
         spark: [ "spark-3.5" ]
         java: [ "java-8" ]
-    if: ${{ startsWith(github.repository, 'apache/') }}
     runs-on: ubuntu-24.04-arm
     container: ${{ matrix.os }}
     steps:
