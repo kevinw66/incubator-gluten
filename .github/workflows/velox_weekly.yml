@@ -16,11 +16,9 @@
 name: Velox backend weekly job
 
 on:
-  pull_request:
-    paths:
-      - '.github/workflows/velox_weekly.yml'
-  schedule:
-    - cron: '0 20 * * 0'
+  push:
+    branches:
+      - weekly-test
 
 env:
   ACTIONS_ALLOW_USE_UNSECURE_NODE_VERSION: true
@@ -160,7 +158,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ "openeuler/openeuler:24.03" ]
-    if: ${{ startsWith(github.repository, 'apache/') }}
     runs-on: ubuntu-24.04-arm
     container: ${{ matrix.os }}
     steps:
@@ -190,7 +187,6 @@ jobs:
       fail-fast: false
       matrix:
         os: [ "openeuler/openeuler:24.03" ]
-    if: ${{ startsWith(github.repository, 'apache/') }}
     runs-on: ubuntu-24.04-arm
     container: ${{ matrix.os }}
     steps:
