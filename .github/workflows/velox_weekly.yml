@@ -157,7 +157,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ "openeuler/openeuler:24.03" ]
+        os: [ "openeuler/openeuler:24.03-lts-sp1" ]
     runs-on: ubuntu-24.04-arm
     container: ${{ matrix.os }}
     steps:
@@ -186,7 +186,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        os: [ "openeuler/openeuler:24.03" ]
+        os: [ "openeuler/openeuler:24.03-lts-sp1" ]
     runs-on: ubuntu-24.04-arm
     container: ${{ matrix.os }}
     steps:
